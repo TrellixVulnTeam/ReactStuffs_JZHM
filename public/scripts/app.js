@@ -22,58 +22,67 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Header = /*#__PURE__*/function (_React$Component) {
-  _inherits(Header, _React$Component);
+var Counter = /*#__PURE__*/function (_React$Component) {
+  _inherits(Counter, _React$Component);
 
-  var _super = _createSuper(Header);
+  var _super = _createSuper(Counter);
 
-  function Header() {
-    _classCallCheck(this, Header);
+  function Counter(props) {
+    var _this;
 
-    return _super.apply(this, arguments);
+    _classCallCheck(this, Counter);
+
+    _this = _super.call(this, props);
+    _this.handleAddOne = _this.handleAddOne.bind(_assertThisInitialized(_this));
+    _this.handleMinusOne = _this.handleMinusOne.bind(_assertThisInitialized(_this));
+    _this.handleReset = _this.handleReset.bind(_assertThisInitialized(_this));
+    _this.state = {
+      count: 0
+    };
+    return _this;
   }
 
-  _createClass(Header, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, this.props.title), /*#__PURE__*/React.createElement("h2", null, this.props.subtitle));
+  _createClass(Counter, [{
+    key: "handleAddOne",
+    value: function handleAddOne() {
+      this.setState(function (prevState) {
+        return {
+          count: prevState.count + 1
+        };
+      });
     }
-  }]);
-
-  return Header;
-}(React.Component);
-
-var Action = /*#__PURE__*/function (_React$Component2) {
-  _inherits(Action, _React$Component2);
-
-  var _super2 = _createSuper(Action);
-
-  function Action() {
-    _classCallCheck(this, Action);
-
-    return _super2.apply(this, arguments);
-  }
-
-  _createClass(Action, [{
-    key: "handlePick",
-    value: function handlePick() {
-      alert('handlepick');
+  }, {
+    key: "handleMinusOne",
+    value: function handleMinusOne() {
+      this.setState(function (prevState) {
+        return {
+          count: prevState.count - 1
+        };
+      });
+    }
+  }, {
+    key: "handleReset",
+    value: function handleReset() {
+      this.setState(function (prevState) {
+        return {
+          count: 0
+        };
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
-        onClick: this.handlePick
-      }, "the button"));
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "Count: ", this.state.count, " "), /*#__PURE__*/React.createElement("button", {
+        onClick: this.handleAddOne
+      }, "+1"), /*#__PURE__*/React.createElement("button", {
+        onClick: this.handleMinusOne
+      }, "-1"), /*#__PURE__*/React.createElement("button", {
+        onClick: this.handleReset
+      }, "reset"));
     }
   }]);
 
-  return Action;
+  return Counter;
 }(React.Component);
 
-var jsx = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Header, {
-  title: "testASD"
-}), /*#__PURE__*/React.createElement(Header, {
-  subtitle: "testSUB"
-}), /*#__PURE__*/React.createElement(Action, null));
-ReactDOM.render(jsx, document.getElementById('app'));
+ReactDOM.render( /*#__PURE__*/React.createElement(Counter, null), document.getElementById('app'));
