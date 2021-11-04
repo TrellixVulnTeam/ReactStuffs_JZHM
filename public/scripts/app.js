@@ -22,8 +22,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-//handle pick pass down to action and setup onClick -bind here
-//randomly pikc an option and alert it
 var App = /*#__PURE__*/function (_React$Component) {
   _inherits(App, _React$Component);
 
@@ -38,8 +36,9 @@ var App = /*#__PURE__*/function (_React$Component) {
     _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_assertThisInitialized(_this));
     _this.handlePick = _this.handlePick.bind(_assertThisInitialized(_this));
     _this.handleAddOption = _this.handleAddOption.bind(_assertThisInitialized(_this));
+    _this.handleDeleteOption = _this.handleDeleteOption.bind(_assertThisInitialized(_this));
     _this.state = {
-      options: []
+      options: props.options
     };
     return _this;
   }
@@ -50,6 +49,27 @@ var App = /*#__PURE__*/function (_React$Component) {
       this.setState(function () {
         return {
           options: []
+        };
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log("Mounted");
+    }
+  }, {
+    key: "componentDidUpdateP",
+    value: function componentDidUpdateP() {
+      console.log("Updated");
+    }
+  }, {
+    key: "handleDeleteOption",
+    value: function handleDeleteOption(optionToRemove) {
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.filter(function (option) {
+            return optionToRemove !== option;
+          })
         };
       });
     }
@@ -78,17 +98,16 @@ var App = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var title = "React App 2.0";
       var subtitle = "sub react app";
       return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Header, {
-        title: title,
         subtitle: subtitle
       }), /*#__PURE__*/React.createElement(Action, {
         hasOptions: this.state.options.length > 0,
         handlePick: this.handlePick
       }), /*#__PURE__*/React.createElement(Options, {
         options: this.state.options,
-        handleDeleteOptions: this.handleDeleteOptions
+        handleDeleteOptions: this.handleDeleteOptions,
+        handleDeleteOption: this.handleDeleteOption
       }), /*#__PURE__*/React.createElement(AddOption, {
         handleAddOption: this.handleAddOption
       }));
@@ -96,7 +115,8 @@ var App = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return App;
-}(React.Component);
+}(React.Component); //stateless functional components
+
 
 var Action = function Action(props) {
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
@@ -111,17 +131,22 @@ var Options = function Options(props) {
   }, "Remove All"), props.options.map(function (option) {
     return /*#__PURE__*/React.createElement(Option, {
       key: option,
-      optionText: option
+      optionText: option,
+      handleDeleteOption: props.handleDeleteOption
     });
   }));
 };
 
 var Option = function Option(props) {
-  return /*#__PURE__*/React.createElement("div", null, props.optionText);
+  return /*#__PURE__*/React.createElement("div", null, props.optionText, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick(e) {
+      props.handleDeleteOption(props.optionText);
+    }
+  }, "remove"));
 };
 
 var Header = function Header(props) {
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, props.title), /*#__PURE__*/React.createElement("h2", null, props.subtitle));
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, props.title), props.subtitle && /*#__PURE__*/React.createElement("h2", null, props.subtitle));
 };
 
 var AddOption = /*#__PURE__*/function (_React$Component2) {
@@ -169,4 +194,10 @@ var AddOption = /*#__PURE__*/function (_React$Component2) {
   return AddOption;
 }(React.Component);
 
+Header.defaultProps = {
+  title: "React App default"
+};
+App.defaultProps = {
+  options: []
+};
 ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById("app"));

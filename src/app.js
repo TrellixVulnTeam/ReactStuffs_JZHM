@@ -1,23 +1,35 @@
-//handle pick pass down to action and setup onClick -bind here
-//randomly pikc an option and alert it
-
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
 		this.handlePick = this.handlePick.bind(this);
 		this.handleAddOption = this.handleAddOption.bind(this);
+		this.handleDeleteOption = this.handleDeleteOption.bind(this);
 		this.state = {
-			options: [],
+			options: props.options,
 		};
 	}
 	handleDeleteOptions() {
-		this.setState(() => {
-			return {
-				options: [],
-			};
-		});
+		this.setState(() => ({
+			options: [],
+		}));
 	}
+	componentDidMount() {
+		console.log("Mounted");
+	}
+
+	componentDidUpdateP() {
+		console.log("Updated");
+	}
+
+	handleDeleteOption(optionToRemove) {
+		this.setState((prevState) => ({
+			options: prevState.options.filter((option) => {
+				return optionToRemove !== option;
+			}),
+		}));
+	}
+
 	handlePick() {
 		const randomNum = Math.floor(Math.random() * this.state.options.length);
 		const option = this.state.options[randomNum];
@@ -30,21 +42,17 @@ class App extends React.Component {
 		} else if (this.state.options.indexOf(option) > -1) {
 			return "Already exists";
 		}
-
-		this.setState((prevState) => {
-			return {
-				options: prevState.options.concat([option]),
-			};
-		});
+		this.setState((prevState) => ({
+			options: prevState.options.concat([option]),
+		}));
 	}
 
 	render() {
-		const title = "React App 2.0";
 		const subtitle = "sub react app";
 
 		return (
 			<div>
-				<Header title={title} subtitle={subtitle} />
+				<Header subtitle={subtitle} />
 				<Action
 					hasOptions={this.state.options.length > 0}
 					handlePick={this.handlePick}
@@ -52,6 +60,7 @@ class App extends React.Component {
 				<Options
 					options={this.state.options}
 					handleDeleteOptions={this.handleDeleteOptions}
+					handleDeleteOption={this.handleDeleteOption}
 				/>
 				<AddOption handleAddOption={this.handleAddOption} />
 			</div>
@@ -59,6 +68,7 @@ class App extends React.Component {
 	}
 }
 
+//stateless functional components
 const Action = (props) => {
 	return (
 		<div>
@@ -74,20 +84,35 @@ const Options = (props) => {
 		<div>
 			<button onClick={props.handleDeleteOptions}>Remove All</button>
 			{props.options.map((option) => (
-				<Option key={option} optionText={option} />
+				<Option
+					key={option}
+					optionText={option}
+					handleDeleteOption={props.handleDeleteOption}
+				/>
 			))}
 		</div>
 	);
 };
 const Option = (props) => {
-	return <div>{props.optionText}</div>;
+	return (
+		<div>
+			{props.optionText}
+			<button
+				onClick={(e) => {
+					props.handleDeleteOption(props.optionText);
+				}}
+			>
+				remove
+			</button>
+		</div>
+	);
 };
 
 const Header = (props) => {
 	return (
 		<div>
 			<h1>{props.title}</h1>
-			<h2>{props.subtitle}</h2>
+			{props.subtitle && <h2>{props.subtitle}</h2>}
 		</div>
 	);
 };
@@ -102,13 +127,9 @@ class AddOption extends React.Component {
 	}
 	handleAddOption(e) {
 		e.preventDefault();
-
 		const option = e.target.elements.option.value.trim();
 		const error = this.props.handleAddOption(option);
-
-		this.setState(() => {
-			return { error };
-		});
+		this.setState(() => ({ error }));
 	}
 	render() {
 		return (
@@ -122,5 +143,13 @@ class AddOption extends React.Component {
 		);
 	}
 }
+
+Header.defaultProps = {
+	title: "React App default",
+};
+
+App.defaultProps = {
+	options: [],
+};
 
 ReactDOM.render(<App />, document.getElementById("app"));
