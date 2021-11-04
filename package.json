@@ -7,6 +7,7 @@
     "anymatch": "^3.1.2",
     "balanced-match": "^1.0.2",
     "binary-extensions": "^2.2.0",
+    "bootstrap": "^5.1.3",
     "brace-expansion": "^1.1.11",
     "braces": "^3.0.2",
     "browserslist": "^4.17.5",
@@ -63,6 +64,10 @@
     "picocolors": "^1.0.0",
     "picomatch": "^2.3.0",
     "pify": "^4.0.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.1",
+    "react-dom": "^17.0.2",
+    "reactstrap": "^9.0.0",
     "readdirp": "^3.6.0",
     "regenerate": "^1.4.2",
     "regenerate-unicode-properties": "^9.0.0",
@@ -97,5 +102,4 @@
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5"
   }
-  
 }
