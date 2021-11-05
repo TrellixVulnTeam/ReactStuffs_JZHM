@@ -13,4 +13,4 @@ class declaration without the constructor and arrow function to use a fixed this
 
 ### import and export (third party and own components)
 
-export default ( 'export default GIVEN_NAME' and 'export default const varname = ()....')
+- export default ( `export default GIVEN_NAME` and `export default const varname = ()....`)
