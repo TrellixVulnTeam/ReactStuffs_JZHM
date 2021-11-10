@@ -3,10 +3,16 @@ import AddOption from "./AddOption";
 import Action from "./Action";
 import Options from "./Options";
 import Header from "./Header";
+import OptionModal from "./OptionModal";
 
 export default class App extends React.Component {
 	state = {
 		options: [],
+		selectedOption: undefined,
+	};
+
+	handleClearSelectedOption = () => {
+		this.setState(() => ({ selectedOption: undefined }));
 	};
 
 	handleDeleteOptions = () => {
@@ -17,16 +23,14 @@ export default class App extends React.Component {
 
 	handleDeleteOption = (optionToRemove) => {
 		this.setState((prevState) => ({
-			options: prevState.options.filter((option) => {
-				return optionToRemove !== option;
-			}),
+			options: prevState.options.filter((option) => optionToRemove !== option),
 		}));
 	};
 
 	handlePick = () => {
 		const randomNum = Math.floor(Math.random() * this.state.options.length);
 		const option = this.state.options[randomNum];
-		alert(option);
+		this.setState(() => ({ selectedOption: option }));
 	};
 
 	handleAddOption = (option) => {
@@ -77,11 +81,13 @@ export default class App extends React.Component {
 					handleDeleteOption={this.handleDeleteOption}
 				/>
 				<AddOption handleAddOption={this.handleAddOption} />
+
+				<OptionModal
+					selectedOption={this.state.selectedOption}
+					handleClearSelectedOption={this.handleClearSelectedOption}
+					appElement={document.getElementById("app")} //props to get the appElement necessary for Modal
+				/>
 			</div>
 		);
 	}
 }
-
-App.defaultProps = {
-	options: [],
-};
