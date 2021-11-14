@@ -25,3 +25,9 @@
 	margin: 0;
 	padding: 0;
 }
+
+@media (max-width: $desktop-breakpoint) {
+	.widget {
+		margin-bottom: $m-size;
+	}
+}
